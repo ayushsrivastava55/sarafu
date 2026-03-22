@@ -1,6 +1,6 @@
 {
-  "buildCommand": "cd packages/core && npx tsc && cd ../../apps/web && npx next build",
-  "outputDirectory": "apps/web/.next",
-  "installCommand": "pnpm install",
-  "framework": "nextjs"
+  "framework": "nextjs",
+  "installCommand": "pnpm install && cd packages/core && npx tsc",
+  "buildCommand": "cd apps/web && npx next build",
+  "outputDirectory": "apps/web/.next"
 }
