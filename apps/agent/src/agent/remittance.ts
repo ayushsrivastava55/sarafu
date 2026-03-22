@@ -72,6 +72,12 @@ export async function getQuote(intent: RemittanceIntent): Promise<QuoteResult> {
   const mento = await getMento();
   const amountIn = parseUnits(intent.amount.toString(), 18);
 
+  // Find route first — Mento V3 requires explicit route discovery
+  const route = await mento.routes.findRoute(intent.sourceToken, intent.targetToken);
+  if (!route) {
+    throw new Error(`No route available for ${intent.sourceCurrency} -> ${intent.targetCurrency}`);
+  }
+
   const expectedOut = await mento.quotes.getAmountOut(
     intent.sourceToken,
     intent.targetToken,
@@ -84,9 +90,9 @@ export async function getQuote(intent: RemittanceIntent): Promise<QuoteResult> {
 
   return {
     sourceAmount: sourceAmountStr,
-    sourceCurrency: intent.sourceCurrency || "USD",
-    targetAmount: targetAmountStr,
-    targetCurrency: intent.targetCurrency || "?",
+    sourceCurrency: (intent.sourceCurrency || "USD").toUpperCase(),
+    targetAmount: parseFloat(targetAmountStr).toFixed(2),
+    targetCurrency: (intent.targetCurrency || "?").toUpperCase(),
     exchangeRate: rate,
     fee: "< $0.001",
   };
