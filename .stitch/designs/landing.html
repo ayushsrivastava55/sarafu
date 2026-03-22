@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sarafu | Sovereign Remittances</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        body {
+            background-color: #131313;
+            color: #e5e2e1;
+            font-family: 'Inter', sans-serif;
+        }
+        .font-headline { font-family: 'Manrope', sans-serif; }
+        .glass-panel {
+            background: rgba(28, 27, 27, 0.6);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+        }
+        .gold-gradient {
+            background: linear-gradient(135deg, #ffe2ab 0%, #ffbf00 100%);
+        }
+        .glow-subtle {
+            box-shadow: 0 0 40px rgba(255, 191, 0, 0.08);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "secondary-fixed-dim": "#e9c400",
+                "primary": "#ffe2ab",
+                "tertiary-fixed-dim": "#00d9fc",
+                "surface-container-high": "#2a2a2a",
+                "tertiary-fixed": "#aaedff",
+                "outline": "#9c8f78",
+                "surface-variant": "#353534",
+                "error-container": "#93000a",
+                "secondary-container": "#ffdb3c",
+                "surface-container-highest": "#353534",
+                "secondary-fixed": "#ffe16d",
+                "on-tertiary-fixed": "#001f26",
+                "on-primary-fixed-variant": "#5c4300",
+                "on-surface-variant": "#d4c5ab",
+                "inverse-surface": "#e5e2e1",
+                "surface-container-lowest": "#0e0e0e",
+                "surface-container-low": "#1c1b1b",
+                "on-background": "#e5e2e1",
+                "on-primary-container": "#6d5000",
+                "background": "#131313",
+                "error": "#ffb4ab",
+                "surface": "#131313",
+                "surface-tint": "#fbbc00",
+                "surface-bright": "#3a3939",
+                "on-tertiary": "#003640",
+                "on-error-container": "#ffdad6",
+                "on-secondary-fixed-variant": "#544600",
+                "on-secondary-fixed": "#221b00",
+                "on-tertiary-fixed-variant": "#004e5c",
+                "on-surface": "#e5e2e1",
+                "on-error": "#690005",
+                "outline-variant": "#504532",
+                "tertiary": "#b4efff",
+                "on-primary-fixed": "#261a00",
+                "surface-container": "#201f1f",
+                "primary-fixed-dim": "#fbbc00",
+                "on-secondary-container": "#725f00",
+                "tertiary-container": "#04dcff",
+                "on-primary": "#402d00",
+                "on-tertiary-container": "#005d6d",
+                "inverse-on-surface": "#313030",
+                "primary-fixed": "#ffdfa0",
+                "primary-container": "#ffbf00",
+                "surface-dim": "#131313",
+                "secondary": "#fff9ef",
+                "inverse-primary": "#795900",
+                "on-secondary": "#3a3000"
+              },
+              fontFamily: {
+                "headline": ["Manrope"],
+                "body": ["Inter"],
+                "label": ["Inter"]
+              },
+              borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+            },
+          },
+        }
+      </script>
+</head>
+<body class="bg-surface text-on-surface selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-[#131313]/60 backdrop-blur-xl shadow-[0_40px_40px_0px_rgba(0,0,0,0.06)]">
+<div class="flex justify-between items-center max-w-7xl mx-auto px-6 h-20">
+<div class="text-2xl font-black tracking-tighter text-[#fff9ef] font-headline">Sarafu</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-[#FFBF00] font-bold border-b-2 border-[#FFBF00] pb-1 font-headline tracking-tight" href="#">How it Works</a>
+<a class="text-[#d4c5ab] hover:text-[#fff9ef] transition-colors font-headline tracking-tight" href="#">Currencies</a>
+<a class="text-[#d4c5ab] hover:text-[#fff9ef] transition-colors font-headline tracking-tight" href="#">Security</a>
+<a class="text-[#d4c5ab] hover:text-[#fff9ef] transition-colors font-headline tracking-tight" href="#">Comparison</a>
+</div>
+<button class="bg-primary-container text-on-primary-container px-6 py-2.5 rounded-lg font-bold active:scale-95 duration-200 transition-all gold-gradient">
+                Try Sarafu
+            </button>
+</div>
+</nav>
+<main class="pt-32">
+<!-- Hero Section -->
+<section class="max-w-7xl mx-auto px-6 mb-32 relative">
+<div class="absolute top-0 -left-20 w-96 h-96 bg-primary/5 blur-[120px] rounded-full"></div>
+<div class="absolute -bottom-20 -right-20 w-80 h-80 bg-tertiary-container/5 blur-[100px] rounded-full"></div>
+<div class="grid lg:grid-cols-2 gap-16 items-center">
+<div>
+<h1 class="text-6xl md:text-7xl font-extrabold font-headline leading-[1.1] mb-6 tracking-tight text-secondary">
+                        Send money home. <span class="text-primary-container">Instant, invisible, $0.001 fee.</span>
+</h1>
+<p class="text-xl text-on-surface-variant mb-10 leading-relaxed max-w-lg">
+                        AI-powered remittance settled in 2 seconds via the Celo blockchain. Sovereign payments, finally accessible to everyone.
+                    </p>
+<div class="flex flex-wrap gap-4">
+<button class="gold-gradient text-on-primary-container px-8 py-4 rounded-xl font-bold text-lg active:scale-95 transition-transform">
+                            Try Sarafu
+                        </button>
+<button class="bg-surface-container-high px-8 py-4 rounded-xl font-semibold border border-outline-variant/20 hover:bg-surface-bright transition-colors">
+                            View Documentation
+                        </button>
+</div>
+</div>
+<div class="relative group">
+<div class="absolute inset-0 bg-primary/10 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+<div class="glass-panel p-8 rounded-full border border-outline-variant/10 glow-subtle relative overflow-hidden">
+<div class="flex items-center justify-between mb-12">
+<span class="text-sm font-bold tracking-widest text-primary-container uppercase">Live Metrics</span>
+<div class="flex gap-2">
+<div class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></div>
+<span class="text-xs text-on-surface-variant">Venice AI Processing</span>
+</div>
+</div>
+<div class="space-y-8">
+<div class="flex justify-between items-end">
+<div>
+<p class="text-on-surface-variant text-sm mb-1 uppercase tracking-tighter">Sarafu Fee</p>
+<p class="text-4xl font-black font-headline text-secondary">$0.001</p>
+</div>
+<div class="text-right">
+<p class="text-on-surface-variant text-sm mb-1 uppercase tracking-tighter">TradFi Fee</p>
+<p class="text-2xl font-bold font-headline text-error line-through decoration-2 opacity-60">$14.00</p>
+</div>
+</div>
+<div class="h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-[1%]"></div>
+</div>
+<div class="flex justify-between items-end">
+<div>
+<p class="text-on-surface-variant text-sm mb-1 uppercase tracking-tighter">Settlement</p>
+<p class="text-4xl font-black font-headline text-secondary">2 Seconds</p>
+</div>
+<div class="text-right">
+<p class="text-on-surface-variant text-sm mb-1 uppercase tracking-tighter">Standard</p>
+<p class="text-2xl font-bold font-headline text-on-surface-variant">3 Days</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- How it Works -->
+<section class="bg-surface-container-low py-32">
+<div class="max-w-7xl mx-auto px-6">
+<div class="mb-20 text-center">
+<h2 class="text-4xl font-black font-headline mb-4">The New Standard of Transfer</h2>
+<p class="text-on-surface-variant max-w-xl mx-auto">Three steps to global financial freedom, powered by decentralized intelligence.</p>
+</div>
+<div class="grid md:grid-cols-3 gap-8">
+<!-- Step 1 -->
+<div class="bg-surface p-10 rounded-xl border border-outline-variant/10 flex flex-col items-center text-center">
+<div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-8 text-primary-container">
+<span class="material-symbols-outlined text-4xl">chat_bubble</span>
+</div>
+<h3 class="text-xl font-bold font-headline mb-4">Type your intent</h3>
+<div class="w-full bg-surface-container-high p-4 rounded-lg text-left text-sm font-mono text-on-surface-variant mb-4">
+                            "Send $50 to my friend in Kenya"
+                        </div>
+<p class="text-on-surface-variant text-sm leading-relaxed">Simply state what you want to do. Our AI handles the routing logic across chains.</p>
+</div>
+<!-- Step 2 -->
+<div class="bg-surface p-10 rounded-xl border border-outline-variant/10 flex flex-col items-center text-center relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4">
+<span class="text-[10px] font-bold text-primary-container px-2 py-1 bg-primary-container/10 rounded">MENTO ORACLE</span>
+</div>
+<div class="w-16 h-16 rounded-full bg-tertiary-fixed-dim/10 flex items-center justify-center mb-8 text-tertiary-fixed-dim">
+<span class="material-symbols-outlined text-4xl">analytics</span>
+</div>
+<h3 class="text-xl font-bold font-headline mb-4">AI fetches FX quote</h3>
+<div class="space-y-2 w-full">
+<div class="flex justify-between text-xs py-2 border-b border-outline-variant/10">
+<span>USD/KES</span>
+<span class="text-primary-container font-bold">132.45</span>
+</div>
+<div class="flex justify-between text-xs py-2">
+<span>Slippage</span>
+<span class="text-tertiary-fixed-dim">0.01%</span>
+</div>
+</div>
+<p class="text-on-surface-variant text-sm leading-relaxed mt-4">Real-time on-chain oracle rates ensure you get the absolute best price.</p>
+</div>
+<!-- Step 3 -->
+<div class="bg-surface p-10 rounded-xl border border-outline-variant/10 flex flex-col items-center text-center">
+<div class="w-16 h-16 rounded-full bg-secondary-container/10 flex items-center justify-center mb-8 text-secondary-container">
+<span class="material-symbols-outlined text-4xl">check_circle</span>
+</div>
+<h3 class="text-xl font-bold font-headline mb-4">Money arrives</h3>
+<div class="flex items-center gap-2 mb-4 bg-surface-container-high px-4 py-2 rounded-full">
+<div class="w-6 h-6 bg-[#35D07F] rounded-full flex items-center justify-center text-[10px] text-white font-bold">C</div>
+<span class="text-xs font-bold uppercase tracking-widest">Celo Mainnet</span>
+</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">Funds are settled instantly. Secure, final, and globally decentralized.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Supported Currencies -->
+<section class="py-32">
+<div class="max-w-7xl mx-auto px-6">
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+<div>
+<h2 class="text-4xl font-black font-headline mb-4">Borderless from day one.</h2>
+<p class="text-on-surface-variant">Direct corridors to 15+ emerging and developed economies.</p>
+</div>
+<div class="flex items-center gap-4 text-primary-container font-bold group cursor-pointer">
+                        View all corridors <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</div>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+<!-- Kenya -->
+<div class="bg-surface-container-low hover:bg-surface-bright p-6 rounded-xl transition-colors cursor-default border border-transparent hover:border-outline-variant/20 flex items-center gap-4">
+<img alt="Kenya Flag" class="w-8 h-8 rounded-full object-cover" data-alt="Flag of Kenya" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDg2gcCAPr8tCBGEylUNl8BbRXdiK7T-7pCD7s4cgeI8M9QwwRKW8r-otPHY3g3MyqI1x4USssidxPcq7uTQ85BjtAe2wP788DpfDL4j2JpX-x10WjGhFqKbIiWQMTyhFqUOSmrAiXCNeSvuQQyXu8X81xWFijuPNdKSCyR2Y1zT4oXgqrsrEjkBDl9rwF6lpHxMhWE4tmBHGoaZMeZkt6mc_qaE6lEMTFGU8dQoCn72sv-qFV1Ymfqz0akREztJ0k42ez3AcoFdzk9"/>
+<span class="font-bold">Kenya</span>
+</div>
+<!-- Nigeria -->
+<div class="bg-surface-container-low hover:bg-surface-bright p-6 rounded-xl transition-colors cursor-default border border-transparent hover:border-outline-variant/20 flex items-center gap-4">
+<img alt="Nigeria Flag" class="w-8 h-8 rounded-full object-cover" data-alt="Flag of Nigeria" src="https://lh3.googleusercontent.com/aida-public/AB6AXuABV3f3_tmSW78lYuocEukRV_61StZmtI4X_JUbjqsbKMjW9hCjUavT7-2wrhSe5OBy18rfzDSij_6BGNMQoD4aWdNSEKDq0HNpz13VNVx-cwiaYkDT3vXTIluonL85nybhyXWdFmXPf4ZMsvCAdZsgs0HQtlY-oRMTKYOoIieLyikiGF8B0ejhVfxaPmztblBbboFiYXHwygd0-WnyMyHIVXG9YHb4ZoBEd_MopkwzKS9beTLpcukfcnRPNI0amif8RsscskvY_rrV"/>
+<span class="font-bold">Nigeria</span>
+</div>
+<!-- Philippines -->
+<div class="bg-surface-container-low hover:bg-surface-bright p-6 rounded-xl transition-colors cursor-default border border-transparent hover:border-outline-variant/20 flex items-center gap-4">
+<img alt="Philippines Flag" class="w-8 h-8 rounded-full object-cover" data-alt="Flag of Philippines" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1Fh8Ds7hJreFZoSL0eYAQHFxX9M3iLw-L6Cu81VKudZ_eRAR2fYycC0fP5cCEpeGBNIaJBpasbeKEiynD9uyOytNMoZq8i01YLpjAJXNgc0aeV_lFkQUYXijLONNKnloFT_jPBVJ6q0yGAGWGvv7Y3pvXo1otwbYov_x4pDRsT3SMBjn6Gvmlvh-_HX3K7fzDh8oyW3LBQLVEcMdMaFXiMZ_KgVBecVYR-PFbhWz4On_cu6DGSiRlq7fwF9xdcV9MOzzjCE7NHJEB"/>
+<span class="font-bold">Philippines</span>
+</div>
+<!-- Brazil -->
+<div class="bg-surface-container-low hover:bg-surface-bright p-6 rounded-xl transition-colors cursor-default border border-transparent hover:border-outline-variant/20 flex items-center gap-4">
+<img alt="Brazil Flag" class="w-8 h-8 rounded-full object-cover" data-alt="Flag of Brazil" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCVKAd7sTnLS8HQHKltyq7ppCu9NNo54XQP7ckKvAhHMDBuKM1wjPOF0ieRsB4AvxzhdUjr7dSJo781QLqnU7BQRL4bFLKgS-ltTGdvcThqDkcudfLWHB6QiIhSd5p-sTqoLiWv7SYklUDBBBQ1BYM66DupzA3vqbfIfXbIh2-mPccQqlnvCZynVsRKoF1KvDhj-_VqOaLSXmHUQJttSO6byXpkdOHt0BxRPU_fziJpHtQR0x-t3VxpC17OrEeRMbld6MqsZfImAoGQ"/>
+<span class="font-bold">Brazil</span>
+</div>
+<!-- Ghana -->
+<div class="bg-surface-container-low hover:bg-surface-bright p-6 rounded-xl transition-colors cursor-default border border-transparent hover:border-outline-variant/20 flex items-center gap-4">
+<img alt="Ghana Flag" class="w-8 h-8 rounded-full object-cover" data-alt="Flag of Ghana" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBNivFtVQPlSQGdXT_g_cNgkOjhq38HE8PbbvKk1JvX9ut2On7cyon14Oh_vOgQOqs8hsmDc682lOPOyJJ1EAN9zNs_5Ee5puq3Gf8lOWJWme3IdECL_OGG32Hz7zmfjet5q3RENo8v6bcFxtAlH-MgyFEmpVDFgUEYrm-YO_fBWkqVHl-HavDvAl-uLnpQ2lPHgyMOJDRcgC_RRixputArDuUozrMiyuN2g6OqBfsfmP9ZxpYLL2awcuvUwq_MM-yb2TWx0tLofTC"/>
+<span class="font-bold">Ghana</span>
+</div>
+<!-- South Africa -->
+<div class="bg-surface-container-low hover:bg-surface-bright p-6 rounded-xl transition-colors cursor-default border border-transparent hover:border-outline-variant/20 flex items-center gap-4">
+<img alt="South Africa Flag" class="w-8 h-8 rounded-full object-cover" data-alt="Flag of South Africa" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAg1mYDyd90ktyEbib3jxSfcxLLKj6_j3zBCYbutIawz_R4NU_ScvBFmN2Ol4tvMGPKvFXPDxF9FkPpvtnJMvqmmfvhbux2mKaGHYOn5H0UyiKGQ_dsV12EXXddhVShaFop24FT9-CRLyAhCyqwXp0cHbL4CXeWGa0hZqfGlL4k--vxV0Xz3eW7b-EoX15foW9okDVN7gvaHWZ2GtgXQEebYibf0Du4worrSM6bdkkhKTs5IZycAxeb8Y2wJfMfcDJFA4RMZrbwH1km"/>
+<span class="font-bold">South Africa</span>
+</div>
+<!-- Colombia -->
+<div class="bg-surface-container-low hover:bg-surface-bright p-6 rounded-xl transition-colors cursor-default border border-transparent hover:border-outline-variant/20 flex items-center gap-4">
+<img alt="Colombia Flag" class="w-8 h-8 rounded-full object-cover" data-alt="Flag of Colombia" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKK_ovYRaw5jD2mgEKz4z-_gva1wWNItimsjb9VZSzBDYllh1Y2guz_-6Az9U2i0Je8efxdUr9H3Mr3hYkWaqlIHzEXw6hYr9wGadP8wOk9WwYMyV_w9UczJjc1cUddsst2J2Li1A6zVge0afhCL6zLShcByIIawLChCClj5Arp2PKLqgKeHiISXobNJLQdx4ooHZaWWKiC35umefHu0aK5TRetwOWrSGNDA_bQPmfQFo4R_TNB7GBcEpUudlGEDTYpfQRJxDc1o7F"/>
+<span class="font-bold">Colombia</span>
+</div>
+<!-- UK -->
+<div class="bg-surface-container-low hover:bg-surface-bright p-6 rounded-xl transition-colors cursor-default border border-transparent hover:border-outline-variant/20 flex items-center gap-4">
+<img alt="UK Flag" class="w-8 h-8 rounded-full object-cover" data-alt="Flag of United Kingdom" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMxFQNEVsd4tdL0BT1II73FJb6QkAwLAy4zRJ4I96QCjmpgQWsx8xcz_BifM9WQf2BL7ZKTIl71Cu0DsTqdnsNmT3s-GLmmwVCSSRKc2oSxDP2Wl_rtMj80tVCKs2ju8n8lK5VRYK4aeiCUdpXinW5x7Hf8DsQHDJjVr0fLHwjqsEZWqr9EbeV-WLlSSXcKi_K5n6Gk5_HaHC1tPaUFjHI2xfdjjEnkFG2L_YPBCZysOLOeEfGGWv3c-8m44Wg3f24KJ8GpB8J-hSr"/>
+<span class="font-bold">UK</span>
+</div>
+<!-- Japan -->
+<div class="bg-surface-container-low hover:bg-surface-bright p-6 rounded-xl transition-colors cursor-default border border-transparent hover:border-outline-variant/20 flex items-center gap-4">
+<img alt="Japan Flag" class="w-8 h-8 rounded-full object-cover" data-alt="Flag of Japan" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBHzWEGmvdNQuhbj1OggDdgaKJpWy2KLq5Z_78RhqlUTqyLnJHqX4toPxrCCGV4jTKLYIXUuG0iRR5tNmSn-3EFtgTYenCpGW_N8JR2yLRAIaTQzF58DftJ5K0S8OVW1ijgHoKRC1c21bDy4yKmvtGgJ48rlSKaa_vgHYAtVAdOU6rgcUPn-9Cauz6UIwxA9TTV_0KL6233CpKjLFRukg8O4Gjbq-0ZIV3FEW6KhLfzsf9ABVhYsMh5LwvSrhSJRcLLUpAM2t0uFn5v"/>
+<span class="font-bold">Japan</span>
+</div>
+<!-- UAE -->
+<div class="bg-surface-container-low hover:bg-surface-bright p-6 rounded-xl transition-colors cursor-default border border-transparent hover:border-outline-variant/20 flex items-center gap-4">
+<img alt="UAE Flag" class="w-8 h-8 rounded-full object-cover" data-alt="Flag of UAE" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBK_QtLQfCGIANQ-2IY8ulVnXlVNgYZfYFRZJeXBsQKqqnO235NGs7yLCIPBcISBtjshjWro1ImUeVIrJ9aN9D_4h8peJBYWTQQ2exYp1vfPx_2L079b3XujrDJUMwPLRcBHmraA0kF0UdOXMTMrk3pc6yNwWekuDFpPFo3nvxxY3ziyX4QvPN1xv5M2bc2YGYEdXIhg450w2A_XZrvWNa6sN0-Mzwx8n2AOJOuV_Qerl-Abz94hnDFYZlTljF-lWiuFDghVGfGWJEf"/>
+<span class="font-bold">UAE</span>
+</div>
+<!-- Argentina -->
+<div class="bg-surface-container-low hover:bg-surface-bright p-6 rounded-xl transition-colors cursor-default border border-transparent hover:border-outline-variant/20 flex items-center gap-4">
+<img alt="Argentina Flag" class="w-8 h-8 rounded-full object-cover" data-alt="Flag of Argentina" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkiPe0SfvjqI6QGRwgITP4qFuD1O7LQQ2cvxDm5H7ZXcp_Hb8MQCIIwIv0VCRFWSIv1HJI1hXa0bhleYJb2tOrHifXcLsrzWJmiI_y9-KfRrlzTb54rF4J1-3guo2fxzxIGwDVy3eBHW95siK2J3qorllKJ6fmpN3c9_EfH9wdJBcKvT3RJYegKvqqalfO2utIhTe52inTVIsSLxwDSw1vX665rYt_3T_3SmkOI-jIhF21kFTj27U9t-iXm2smpr_rgYpyLJog_8wh"/>
+<span class="font-bold">Argentina</span>
+</div>
+<!-- Mexico -->
+<div class="bg-surface-container-low hover:bg-surface-bright p-6 rounded-xl transition-colors cursor-default border border-transparent hover:border-outline-variant/20 flex items-center gap-4">
+<img alt="Mexico Flag" class="w-8 h-8 rounded-full object-cover" data-alt="Flag of Mexico" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAuOSWdHshVbJafR33ijRQlz-wlgoOqMk2Zq1bRVy3dgjVw36bb8unzVABtG2guPu6wZKg85qLnCUatKX-kvnzuGHGB3-HlrLTgtnm2iNczTyzKRofqIwRcUVMI4sCcHSH7Xa8X0TroN2jZ53-MtFaL5CBvI6zmE9WSq6-_kD7xAfyPHZCTUHYcJSr7wlhIhcUSDu3D_RXGR7JoX1SUeWXuJYpSASj9DXYK6GhzpLuGEqiSBrl3O9MMq0_OpVo_GQZO2s1wJXpRv7Yt"/>
+<span class="font-bold">Mexico</span>
+</div>
+<!-- Egypt -->
+<div class="bg-surface-container-low hover:bg-surface-bright p-6 rounded-xl transition-colors cursor-default border border-transparent hover:border-outline-variant/20 flex items-center gap-4">
+<img alt="Egypt Flag" class="w-8 h-8 rounded-full object-cover" data-alt="Flag of Egypt" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0N0_7OJvvXKmIPYIo5DwmqsOdH2gCRXMEDLgvClNTfApde7piuQCTJTOZYPJZHBOFHIWvtWaR-5-mWHWLbCY7vpDZ6JEfxxil0IJsEZmwi_9hM4v2J8G3K9mC9zpUWt3MRqddK2FPmNqRTujGUu2oi_rlB9vosfMCONRrs2XuxC5DzTGosoS9WjmmtYCgLAEVrBrAcvVcsI6weWu1ejWU8gGDhI5joopTguRZKcYJB7vTha_O-Hn9xtpJywz0Y0lMoMuEwAwXq8l8"/>
+<span class="font-bold">Egypt</span>
+</div>
+<!-- India -->
+<div class="bg-surface-container-low hover:bg-surface-bright p-6 rounded-xl transition-colors cursor-default border border-transparent hover:border-outline-variant/20 flex items-center gap-4">
+<img alt="India Flag" class="w-8 h-8 rounded-full object-cover" data-alt="Flag of India" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxDZBDbm1FjOWCoxhxDDV_7Uzn-SDe7wSV9LdMWgGIiOoclvIstDOKtLOu5Bk59osAWV7xpYC9cxwhH2SvB3PzTL4FBhufVfeeZ-SuFiYLhkox2vSgQ0CBqI-5cXDGjmW4ZWN8kJU-PW3zZrz-EKeLKImYeAvbJvkeNKhggMb123V5BBsg3TcGjj_hYmMoWJ9sAPw2k_aJf1CAuwGQL9NuHuLLybhJiGc9D1FshfQj61vTZlDJlyiTTFecfIqHTwBtsLTTNZjwhmeC"/>
+<span class="font-bold">India</span>
+</div>
+<!-- Vietnam -->
+<div class="bg-surface-container-low hover:bg-surface-bright p-6 rounded-xl transition-colors cursor-default border border-transparent hover:border-outline-variant/20 flex items-center gap-4">
+<img alt="Vietnam Flag" class="w-8 h-8 rounded-full object-cover" data-alt="Flag of Vietnam" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjCTnn5mu-0CJGgXZvvbgw7qaeg5My_o-krD0EPam7csd1nZIR_GIoLVqwhszMScCfgTkyYUXCcokd9b0Kc3QWZaZXdcZ8GVY9cyGowMaEtJprb4UTcc52cOBKq_bJHEQK9d8HaMdlHDSpgMBzKVd8RS9b0y6-R-uAgGBnvlLG9eH9nKx0rKddlQUSWCL-q7UidHZK8jmq9tVdQUOtM9Dkwht2GuHJlTXsp86w8q6awJ-UvZy8qICKNGViHaeVEVmC4vPbWCSkiidu"/>
+<span class="font-bold">Vietnam</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Fee Comparison Table -->
+<section class="bg-surface-container-low py-32 overflow-hidden">
+<div class="max-w-7xl mx-auto px-6 relative">
+<div class="text-center mb-16">
+<h2 class="text-4xl font-black font-headline mb-4">No contest.</h2>
+<p class="text-on-surface-variant">The data speaks for itself. We've eliminated the friction of moving value.</p>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-separate border-spacing-y-4">
+<thead>
+<tr class="text-on-surface-variant uppercase text-xs tracking-[0.2em] font-bold">
+<th class="px-8 py-4">Provider</th>
+<th class="px-8 py-4">Est. Fee</th>
+<th class="px-8 py-4">Speed</th>
+<th class="px-8 py-4">Transparency</th>
+</tr>
+</thead>
+<tbody>
+<!-- Sarafu -->
+<tr class="bg-surface-container-high rounded-xl glow-subtle border border-primary-container/20">
+<td class="px-8 py-6 rounded-l-xl">
+<div class="flex items-center gap-3">
+<div class="w-3 h-3 rounded-full bg-primary-container"></div>
+<span class="font-black font-headline text-lg">Sarafu</span>
+</div>
+</td>
+<td class="px-8 py-6 font-bold text-primary-container">$0.001</td>
+<td class="px-8 py-6 font-bold">2 Seconds</td>
+<td class="px-8 py-6 rounded-r-xl font-medium text-tertiary-fixed-dim">100% Private (Venice AI)</td>
+</tr>
+<!-- Wise -->
+<tr class="bg-surface p-4">
+<td class="px-8 py-6 rounded-l-xl font-bold opacity-60">Wise</td>
+<td class="px-8 py-6 opacity-60">$4+</td>
+<td class="px-8 py-6 opacity-60">1+ Day</td>
+<td class="px-8 py-6 rounded-r-xl opacity-60">Transparent but slower</td>
+</tr>
+<!-- Western Union -->
+<tr class="bg-surface p-4">
+<td class="px-8 py-6 rounded-l-xl font-bold opacity-60">Western Union</td>
+<td class="px-8 py-6 opacity-60 text-error">$14+</td>
+<td class="px-8 py-6 opacity-60">3+ Days</td>
+<td class="px-8 py-6 rounded-r-xl opacity-60">6.35% Global Avg Cost</td>
+</tr>
+<!-- Bank Wire -->
+<tr class="bg-surface p-4">
+<td class="px-8 py-6 rounded-l-xl font-bold opacity-60">Bank Wire</td>
+<td class="px-8 py-6 opacity-60">$25+</td>
+<td class="px-8 py-6 opacity-60">5+ Days</td>
+<td class="px-8 py-6 rounded-r-xl opacity-60">Manual and slow</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<!-- Privacy Section -->
+<section class="py-32 relative overflow-hidden">
+<div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-20 items-center">
+<div class="relative">
+<div class="w-full aspect-square bg-surface-container-low rounded-3xl flex items-center justify-center border border-outline-variant/10 relative overflow-hidden group">
+<div class="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<span class="material-symbols-outlined text-[120px] text-primary-container/20" style="font-variation-settings: 'FILL' 1;">encrypted</span>
+<div class="absolute inset-x-12 bottom-12 p-6 glass-panel rounded-xl border border-outline-variant/20">
+<div class="flex items-center gap-3 mb-2">
+<div class="w-2 h-2 rounded-full bg-tertiary-fixed-dim"></div>
+<span class="text-[10px] font-bold tracking-widest uppercase">TEE Attestation Active</span>
+</div>
+<p class="text-xs text-on-surface-variant font-mono">0x4F...92: Computation Verified by Secure Enclave</p>
+</div>
+</div>
+</div>
+<div>
+<div class="flex items-center gap-3 mb-6">
+<span class="text-primary-container font-black tracking-widest uppercase text-xs">Privacy by Venice AI</span>
+</div>
+<h2 class="text-5xl font-black font-headline leading-tight mb-8">Your financial data is processed and forgotten.</h2>
+<div class="space-y-6">
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-primary-container">verified_user</span>
+<div>
+<h4 class="font-bold mb-1">Zero Data Retention</h4>
+<p class="text-on-surface-variant text-sm">We never store your personal data, transaction history, or intents. Your path is your own.</p>
+</div>
+</div>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-primary-container">shield</span>
+<div>
+<h4 class="font-bold mb-1">TEE Attestation</h4>
+<p class="text-on-surface-variant text-sm">Our AI runs in Trusted Execution Environments, ensuring no human can ever peek inside the computation.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Final CTA -->
+<section class="max-w-7xl mx-auto px-6 mb-32">
+<div class="bg-primary-container/5 rounded-3xl p-16 md:p-24 text-center border border-primary-container/10 relative overflow-hidden">
+<div class="absolute top-0 right-0 w-64 h-64 bg-primary/10 blur-[100px] rounded-full"></div>
+<div class="relative z-10">
+<h2 class="text-5xl md:text-6xl font-black font-headline mb-8">Ready to send?</h2>
+<p class="text-on-surface-variant text-xl mb-12 max-w-xl mx-auto">Experience the invisible global banking system today.</p>
+<button class="gold-gradient text-on-primary-container px-12 py-5 rounded-xl font-bold text-xl active:scale-95 transition-transform">
+                        Try Sarafu
+                    </button>
+<p class="mt-8 text-sm text-on-surface-variant/60">No credit card required. Only Celo-compatible wallet needed.</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-[#131313] w-full py-16 border-t border-[#353534]/30">
+<div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+<div>
+<span class="text-xl font-black text-[#fff9ef] mb-4 block font-headline">Sarafu</span>
+<p class="text-sm text-[#d4c5ab] leading-relaxed">Sovereign remittances powered by Venice AI. Decentralizing the flow of value for everyone, everywhere.</p>
+</div>
+<div>
+<h4 class="text-sm font-bold text-[#FFBF00] mb-6 uppercase tracking-widest">Platform</h4>
+<div class="flex flex-col gap-4">
+<a class="text-[#d4c5ab] hover:text-[#FFBF00] transition-colors text-sm" href="#">How it Works</a>
+<a class="text-[#d4c5ab] hover:text-[#FFBF00] transition-colors text-sm" href="#">Supported Currencies</a>
+<a class="text-[#d4c5ab] hover:text-[#FFBF00] transition-colors text-sm" href="#">Security Model</a>
+</div>
+</div>
+<div>
+<h4 class="text-sm font-bold text-[#FFBF00] mb-6 uppercase tracking-widest">Resources</h4>
+<div class="flex flex-col gap-4">
+<a class="text-[#d4c5ab] hover:text-[#FFBF00] transition-colors text-sm" href="#">API Documentation</a>
+<a class="text-[#d4c5ab] hover:text-[#FFBF00] transition-colors text-sm" href="#">Network Status</a>
+<a class="text-[#d4c5ab] hover:text-[#FFBF00] transition-colors text-sm" href="#">Support Center</a>
+</div>
+</div>
+<div>
+<h4 class="text-sm font-bold text-[#FFBF00] mb-6 uppercase tracking-widest">Legal</h4>
+<div class="flex flex-col gap-4">
+<a class="text-[#d4c5ab] hover:text-[#FFBF00] transition-colors text-sm" href="#">Privacy Policy</a>
+<a class="text-[#d4c5ab] hover:text-[#FFBF00] transition-colors text-sm" href="#">Terms of Service</a>
+</div>
+</div>
+</div>
+<div class="max-w-7xl mx-auto px-6 mt-16 pt-8 border-t border-[#353534]/30 flex flex-col md:flex-row justify-between items-center gap-6 text-[#d4c5ab] text-sm">
+<p>© 2024 Sarafu. Sovereign remittances powered by Venice AI.</p>
+<div class="flex gap-6">
+<span class="material-symbols-outlined text-xl cursor-pointer hover:text-[#FFBF00] transition-colors">public</span>
+<span class="material-symbols-outlined text-xl cursor-pointer hover:text-[#FFBF00] transition-colors">shield</span>
+<span class="material-symbols-outlined text-xl cursor-pointer hover:text-[#FFBF00] transition-colors">code</span>
+</div>
+</div>
+</footer>
+</body></html>

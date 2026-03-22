@@ -1,9 +1,9 @@
-import { ChatPanel } from "@/components/sarafu/chat-panel";
+import { ChatLayout } from "@/components/sarafu/chat/ChatLayout";
 
 export default function ChatPage() {
   return (
-    <div className="flex h-[calc(100vh-64px)] w-full overflow-hidden">
-      <ChatPanel />
+    <div className="h-screen w-full bg-[#131313] text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container">
+      <ChatLayout />
     </div>
   );
 }
