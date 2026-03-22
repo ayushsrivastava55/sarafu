@@ -26,6 +26,22 @@ sarafu > 50 USD converts to 6,450.23 KES at a rate of 129.00. Fee is under $0.00
 
 USD, EUR, GBP, BRL, KES, NGN, PHP, ZAR, COP, XOF, JPY, CHF, AUD, CAD, GHS
 
+## Live Deployments
+
+### Contracts
+
+- `Celo Sepolia` `RemittanceSwap`: `0xA77f8507838CC8719ac5B59567D2c260c007A366`
+- `Status Sepolia` `RemittanceSwap`: `0xAA777e4835bbC729a0C50F1EC63dC5Dc371379E7`
+
+### On-Chain Proof
+
+- `Status Sepolia` gasless qualifier tx:
+  `https://sepoliascan.status.network/tx/0xb49bfe8970e86623e59cf71d546f8a01c7680fef62a5890b9eade5b4efaf8b1d`
+- `Celo Sepolia` live remittance tx:
+  `https://sepolia.celoscan.io/tx/0x5918e5097ad18eb51c4b93cd648b22c88761fc28b46ffa531a408f11e311f4b5`
+- `Celo Sepolia` `recordRemittance` tx:
+  `https://sepolia.celoscan.io/tx/0xa5c35b1b8336ca5780304d07c245171c31694f8d7dd3743c5fc352363581c8d8`
+
 ## Project Structure
 
 Monorepo managed by Turborepo:
