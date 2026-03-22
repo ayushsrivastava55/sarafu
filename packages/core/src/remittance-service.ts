@@ -10,6 +10,7 @@ import {
 } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 import { deadlineFromMinutes, Mento, ChainId } from "@mento-protocol/mento-sdk";
+import { JsonRpcProvider, Wallet as EthersWallet } from "ethers";
 import { buildFeeComparison } from "./fees.js";
 import { listSupportedCurrencies, resolveTokenAddress, getTokenRegistry } from "./currencies.js";
 import { getExplorerUrl, getNetworkConfig, getActiveNetworkKey, isCeloNetwork } from "./networks.js";
@@ -38,6 +39,12 @@ const ERC20_ABI = [
 let mentoClient: Mento | null = null;
 let mentoClientNetwork: SarafuNetworkKey | null = null;
 
+interface TransactionLike {
+  to: `0x${string}`;
+  data?: `0x${string}`;
+  value?: bigint | number | string;
+}
+
 function getMentoChainId(network: SarafuNetworkKey): ChainId {
   return network === "celo-mainnet" ? ChainId.CELO : ChainId.CELO_SEPOLIA;
 }
@@ -56,13 +63,17 @@ async function getMento(network: SarafuNetworkKey): Promise<Mento> {
   return mentoClient;
 }
 
-function getAccount() {
+function getNormalizedPrivateKey(): `0x${string}` {
   const privateKey = process.env.PRIVATE_KEY;
   if (!privateKey) {
     throw new Error("PRIVATE_KEY is not configured.");
   }
 
-  return privateKeyToAccount(privateKey as `0x${string}`);
+  return (privateKey.startsWith("0x") ? privateKey : `0x${privateKey}`) as `0x${string}`;
+}
+
+function getAccount() {
+  return privateKeyToAccount(getNormalizedPrivateKey());
 }
 
 export function createWallet(network = getActiveNetworkKey()) {
@@ -83,6 +94,37 @@ export function createPublic(network = getActiveNetworkKey()) {
     chain: config.chain,
     transport: http(config.rpcUrl),
   });
+}
+
+function getEthersWallet(network = getActiveNetworkKey()) {
+  const config = getNetworkConfig(network);
+  return new EthersWallet(getNormalizedPrivateKey(), new JsonRpcProvider(config.rpcUrl));
+}
+
+async function sendTransactionWithFallback(
+  network: SarafuNetworkKey,
+  walletClient: ReturnType<typeof createWallet>,
+  publicClient: ReturnType<typeof createPublic>,
+  tx: TransactionLike,
+) {
+  try {
+    const hash = await walletClient.sendTransaction(tx as Parameters<typeof walletClient.sendTransaction>[0]);
+    await publicClient.waitForTransactionReceipt({ hash });
+    return hash;
+  } catch (error) {
+    if (!isCeloNetwork(network)) {
+      throw error;
+    }
+
+    const signer = getEthersWallet(network);
+    const response = await signer.sendTransaction({
+      to: tx.to,
+      data: tx.data,
+      value: tx.value === undefined ? undefined : BigInt(tx.value),
+    });
+    await response.wait();
+    return response.hash as `0x${string}`;
+  }
 }
 
 export class RemittanceService {
@@ -162,12 +204,15 @@ export class RemittanceService {
     );
 
     if (approval) {
-      const approvalHash = await walletClient.sendTransaction(approval as any);
-      await publicClient.waitForTransactionReceipt({ hash: approvalHash });
+      await sendTransactionWithFallback(this.network, walletClient, publicClient, approval as TransactionLike);
     }
 
-    const swapHash = await walletClient.sendTransaction(swap.params as any);
-    await publicClient.waitForTransactionReceipt({ hash: swapHash });
+    const swapHash = await sendTransactionWithFallback(
+      this.network,
+      walletClient,
+      publicClient,
+      swap.params as TransactionLike,
+    );
 
     const result: RemittanceResult = {
       txHash: swapHash,
@@ -194,13 +239,10 @@ export class RemittanceService {
         ],
       });
 
-      const contractTxHash = await walletClient.sendTransaction({
+      const contractTxHash = await sendTransactionWithFallback(this.network, walletClient, publicClient, {
         to: contractAddress,
         data: callData,
-        account,
-        chain: getNetworkConfig(this.network).chain,
       });
-      await publicClient.waitForTransactionReceipt({ hash: contractTxHash });
       result.contractRecordTxHash = contractTxHash;
     }
 

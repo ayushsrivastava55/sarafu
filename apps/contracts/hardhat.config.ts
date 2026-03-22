@@ -1,7 +1,17 @@
 import path from "path";
+import "dotenv/config";
 import { subtask, type HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox-viem";
 import { TASK_COMPILE_SOLIDITY_GET_SOLC_BUILD } from "hardhat/builtin-tasks/task-names";
+
+function getAccounts() {
+  const privateKey = process.env.PRIVATE_KEY;
+  if (!privateKey) {
+    return [];
+  }
+
+  return [privateKey.startsWith("0x") ? privateKey : `0x${privateKey}`];
+}
 
 subtask(TASK_COMPILE_SOLIDITY_GET_SOLC_BUILD, async (args) => {
   if (args.solcVersion !== "0.8.26") {
@@ -29,17 +39,17 @@ const config: HardhatUserConfig = {
   networks: {
     celo: {
       url: "https://forno.celo.org",
-      accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
+      accounts: getAccounts(),
       chainId: 42220,
     },
     "celo-sepolia": {
       url: "https://forno.celo-sepolia.celo-testnet.org/",
-      accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
+      accounts: getAccounts(),
       chainId: 11142220,
     },
     "status-sepolia": {
       url: "https://public.sepolia.rpc.status.network",
-      accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
+      accounts: getAccounts(),
       chainId: 1660990954,
     },
     localhost: {
