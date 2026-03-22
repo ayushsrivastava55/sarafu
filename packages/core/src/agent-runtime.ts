@@ -147,12 +147,7 @@ export class SarafuAgentRuntime {
 
       if (choice.tool_calls?.length) {
         for (const toolCall of choice.tool_calls) {
-          let args: Record<string, unknown>;
-          try {
-            args = JSON.parse(toolCall.function.arguments || "{}") as Record<string, unknown>;
-          } catch {
-            args = {};
-          }
+          const args = JSON.parse(toolCall.function.arguments || "{}") as Record<string, unknown>;
           const result = await this.executeTool(session, toolCall.function.name, args);
 
           toolTrace.push({
@@ -188,18 +183,8 @@ export class SarafuAgentRuntime {
       };
     }
 
-    // Max iterations reached — return gracefully instead of hanging
-    const fallbackText = "I've reached the maximum number of steps for this request. Please try again with a simpler request.";
-    this.appendLog(session, "assistant", fallbackText);
-    return {
-      sessionId: session.id,
-      assistantText: fallbackText,
-      toolTrace,
-      pendingConfirmation: session.pendingConfirmation,
-      quote: session.latestQuote || undefined,
-      tx: session.latestTx || undefined,
-      venice: session.venice,
-    };
+    // Max iterations reached — this is a bug, not expected behavior
+    throw new Error(`Agent loop exceeded ${MAX_ITERATIONS} iterations. Last tool trace: ${JSON.stringify(toolTrace.slice(-2))}`);
   }
 
   private resolveCurrency(value: string): string {

@@ -144,6 +144,9 @@ export class RemittanceService {
       throw new Error("Wallet client account is not available.");
     }
 
+    // Mark quote as consumed BEFORE executing the swap to prevent replay on crash
+    this.quoteStore.markConsumed(input.quoteId);
+
     const mento = await getMento(this.network);
     const amountIn = parseUnits(quote.sourceAmount, 18);
     const { approval, swap } = await mento.swap.buildSwapTransaction(
@@ -201,38 +204,37 @@ export class RemittanceService {
       result.contractRecordTxHash = contractTxHash;
     }
 
-    this.quoteStore.markConsumed(input.quoteId);
     return this.quoteStore.saveExecution(input.idempotencyKey, result);
   }
 
   async getBalances(): Promise<BalanceSnapshot> {
     const publicClient = createPublic(this.network);
-    const walletClient = createWallet(this.network);
-    const account = walletClient.account;
-
-    if (!account) {
-      throw new Error("Wallet client account is not available.");
-    }
+    const account = getAccount();
 
     const registry = getTokenRegistry(this.network);
+    const entries = Object.entries(registry).filter(
+      ([symbol]) => symbol !== "CELO" && symbol !== "USDC",
+    );
+
+    const results = await Promise.all(
+      entries.map(async ([symbol, address]) => {
+        try {
+          const balance = await publicClient.readContract({
+            address: address as `0x${string}`,
+            abi: ERC20_ABI,
+            functionName: "balanceOf",
+            args: [account.address],
+          });
+          return [symbol, formatUnits(balance, 18)] as const;
+        } catch {
+          return [symbol, "0"] as const;
+        }
+      }),
+    );
+
     const balances: Record<string, string> = {};
-
-    for (const [symbol, address] of Object.entries(registry)) {
-      if (symbol === "CELO" || symbol === "USDC") {
-        continue;
-      }
-
-      try {
-        const balance = await publicClient.readContract({
-          address: address as `0x${string}`,
-          abi: ERC20_ABI,
-          functionName: "balanceOf",
-          args: [account.address],
-        });
-        balances[symbol] = formatUnits(balance, 18);
-      } catch {
-        balances[symbol] = "0";
-      }
+    for (const [symbol, value] of results) {
+      balances[symbol] = value;
     }
 
     return {

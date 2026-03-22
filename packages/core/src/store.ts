@@ -11,8 +11,23 @@ interface ExecutionCacheEntry {
 export class QuoteStore {
   private readonly quotes = new Map<string, QuoteRecord>();
   private readonly executions = new Map<string, ExecutionCacheEntry>();
+  private lastCleanup = Date.now();
+  private readonly cleanupIntervalMs = 60_000; // evict expired entries every 60s
+
+  private evictExpired(): void {
+    const now = Date.now();
+    if (now - this.lastCleanup < this.cleanupIntervalMs) return;
+    this.lastCleanup = now;
+
+    for (const [id, quote] of this.quotes) {
+      if (new Date(quote.expiresAt).getTime() < now && quote.consumedAt) {
+        this.quotes.delete(id);
+      }
+    }
+  }
 
   create(input: Omit<QuoteRecord, "quoteId" | "createdAt" | "expiresAt">, ttlMs = DEFAULT_QUOTE_TTL_MS): QuoteRecord {
+    this.evictExpired();
     const createdAt = new Date();
     const quote: QuoteRecord = {
       ...input,
