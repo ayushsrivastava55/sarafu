@@ -108,7 +108,10 @@ export class SarafuAgentRuntime {
     session.messages.push({ role: "user", content: input.message });
     this.appendLog(session, "user", input.message);
 
-    while (true) {
+    const MAX_ITERATIONS = 10;
+    let iterations = 0;
+
+    while (iterations++ < MAX_ITERATIONS) {
       const response = await this.openai.chat.completions.create({
         model: MODEL,
         messages: session.messages,
@@ -144,7 +147,12 @@ export class SarafuAgentRuntime {
 
       if (choice.tool_calls?.length) {
         for (const toolCall of choice.tool_calls) {
-          const args = JSON.parse(toolCall.function.arguments || "{}") as Record<string, unknown>;
+          let args: Record<string, unknown>;
+          try {
+            args = JSON.parse(toolCall.function.arguments || "{}") as Record<string, unknown>;
+          } catch {
+            args = {};
+          }
           const result = await this.executeTool(session, toolCall.function.name, args);
 
           toolTrace.push({
@@ -179,6 +187,19 @@ export class SarafuAgentRuntime {
         venice: session.venice,
       };
     }
+
+    // Max iterations reached — return gracefully instead of hanging
+    const fallbackText = "I've reached the maximum number of steps for this request. Please try again with a simpler request.";
+    this.appendLog(session, "assistant", fallbackText);
+    return {
+      sessionId: session.id,
+      assistantText: fallbackText,
+      toolTrace,
+      pendingConfirmation: session.pendingConfirmation,
+      quote: session.latestQuote || undefined,
+      tx: session.latestTx || undefined,
+      venice: session.venice,
+    };
   }
 
   private resolveCurrency(value: string): string {

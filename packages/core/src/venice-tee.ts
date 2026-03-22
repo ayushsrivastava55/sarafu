@@ -20,10 +20,16 @@ interface TeeVerificationResult {
 }
 
 function getBaseUrl(): string {
-  return process.env.VENICE_TEE_BASE_URL || "https://cloud-api.near.ai/v1";
+  // Venice exposes TEE attestation directly through its own API, NOT through NEAR AI
+  return process.env.VENICE_TEE_BASE_URL || "https://api.venice.ai/api/v1";
+}
+
+function getApiKey(): string | undefined {
+  return process.env.VENICE_API_KEY;
 }
 
 function getModel(): string {
+  // TEE models use e2ee- prefix on Venice
   return process.env.VENICE_TEE_MODEL || "zai-org-glm-4.7";
 }
 
@@ -36,7 +42,8 @@ function isEnabled(): boolean {
 }
 
 function randomNonce() {
-  return randomBytes(16).toString("hex");
+  // Venice requires exactly 32 bytes (64 hex chars)
+  return randomBytes(32).toString("hex");
 }
 
 function normalizeObject(input: unknown): Record<string, unknown> | null {
@@ -56,7 +63,8 @@ function extractSigningAddress(source: Record<string, unknown> | undefined): `0x
     return undefined;
   }
 
-  const direct = source.signing_address ?? source.signingAddress ?? source.address;
+  // Venice returns signing_address or signing_key
+  const direct = source.signing_address ?? source.signing_key ?? source.signingAddress ?? source.address;
   if (typeof direct === "string" && direct.startsWith("0x")) {
     return direct as `0x${string}`;
   }
@@ -66,7 +74,7 @@ function extractSigningAddress(source: Record<string, unknown> | undefined): `0x
     return undefined;
   }
 
-  const nestedValue = nested.signing_address ?? nested.signingAddress ?? nested.address;
+  const nestedValue = nested.signing_address ?? nested.signing_key ?? nested.signingAddress ?? nested.address;
   if (typeof nestedValue === "string" && nestedValue.startsWith("0x")) {
     return nestedValue as `0x${string}`;
   }
@@ -82,11 +90,13 @@ function extractSignaturePayload(raw: unknown): { signature?: string; message?: 
 
   const signature = typeof payload.signature === "string" ? payload.signature : undefined;
   const message =
-    typeof payload.message === "string"
-      ? payload.message
-      : typeof payload.payload === "string"
-        ? payload.payload
-        : undefined;
+    typeof payload.text === "string"
+      ? payload.text
+      : typeof payload.message === "string"
+        ? payload.message
+        : typeof payload.payload === "string"
+          ? payload.payload
+          : undefined;
   const url = typeof payload.url === "string" ? payload.url : undefined;
 
   return { signature, message, url };
@@ -103,17 +113,20 @@ export class VeniceTeeVerifier {
     }
 
     const nonce = randomNonce();
-    const url = new URL(`${getBaseUrl()}/attestation/report`);
+    const apiKey = getApiKey();
+
+    // Venice TEE attestation endpoint: GET /tee/attestation
+    const url = new URL(`${getBaseUrl()}/tee/attestation`);
     url.searchParams.set("model", getModel());
-    url.searchParams.set("signing_algo", getSigningAlgo());
     url.searchParams.set("nonce", nonce);
 
     try {
-      const response = await this.fetchImpl(url.toString(), {
-        headers: {
-          accept: "application/json",
-        },
-      });
+      const headers: Record<string, string> = { accept: "application/json" };
+      if (apiKey) {
+        headers["Authorization"] = `Bearer ${apiKey}`;
+      }
+
+      const response = await this.fetchImpl(url.toString(), { headers });
 
       if (!response.ok) {
         return null;
@@ -121,14 +134,10 @@ export class VeniceTeeVerifier {
 
       const raw = (await response.json()) as unknown;
       const object = normalizeObject(raw);
-      const encoded =
-        typeof object?.report === "string"
-          ? object.report
-          : typeof object?.attestation === "string"
-            ? object.attestation
-            : undefined;
-      const claims = encoded ? maybeDecodeJwt(encoded) : object || undefined;
-      const signingAddress = extractSigningAddress(claims || object || undefined);
+
+      // Venice returns: verified, signing_key, signing_address, intel_quote, nvidia_payload
+      const claims = object || undefined;
+      const signingAddress = extractSigningAddress(claims || undefined);
 
       return {
         nonce,
@@ -149,16 +158,20 @@ export class VeniceTeeVerifier {
     return this.sessionAttestationPromise;
   }
 
-  private async fetchResponseSignature(responseId: string): Promise<unknown> {
-    const url = new URL(`${getBaseUrl()}/signature/${responseId}`);
-    url.searchParams.set("model", getModel());
-    url.searchParams.set("signing_algo", getSigningAlgo());
+  private async fetchResponseSignature(requestId: string): Promise<unknown> {
+    const apiKey = getApiKey();
 
-    const response = await this.fetchImpl(url.toString(), {
-      headers: {
-        accept: "application/json",
-      },
-    });
+    // Venice TEE signature endpoint: GET /tee/signature?model=...&request_id=...
+    const url = new URL(`${getBaseUrl()}/tee/signature`);
+    url.searchParams.set("model", getModel());
+    url.searchParams.set("request_id", requestId);
+
+    const headers: Record<string, string> = { accept: "application/json" };
+    if (apiKey) {
+      headers["Authorization"] = `Bearer ${apiKey}`;
+    }
+
+    const response = await this.fetchImpl(url.toString(), { headers });
 
     if (!response.ok) {
       throw new Error("TEE signature lookup failed.");
@@ -192,6 +205,7 @@ export class VeniceTeeVerifier {
     try {
       const rawSignature = await this.fetchResponseSignature(input.responseId);
       const payload = extractSignaturePayload(rawSignature);
+      // Venice signature returns { text: "requestHash:responseHash", signature: "0x..." }
       const message = payload.message || input.assistantText || input.responseId;
 
       if (!payload.signature) {
