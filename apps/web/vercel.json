@@ -1,0 +1,4 @@
+{
+  "installCommand": "cd ../.. && pnpm install && pnpm --filter @sarafu/core build",
+  "framework": "nextjs"
+}
