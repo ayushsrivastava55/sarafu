@@ -1,7 +1,7 @@
 {
   "name": "sarafu",
   "version": "0.1.0",
-  "description": "A new Celo blockchain project",
+  "description": "Sarafu — AI-powered cross-border remittance agent on Celo",
   "private": true,
   "scripts": {
     "build": "turbo build",
@@ -13,7 +13,10 @@
     "contracts:test": "turbo run test --filter=hardhat",
     "contracts:deploy": "turbo run deploy --filter=hardhat",
     "contracts:deploy:celo-sepolia": "turbo run deploy:celo-sepolia --filter=hardhat",
-    "contracts:deploy:celo": "turbo run deploy:celo --filter=hardhat"
+    "contracts:deploy:celo": "turbo run deploy:celo --filter=hardhat",
+    "agent:dev": "pnpm --filter @sarafu/agent dev",
+    "agent:build": "pnpm --filter @sarafu/agent build",
+    "agent:start": "pnpm --filter @sarafu/agent start"
   },
   "devDependencies": {
     "@types/node": "^20.8.0",
