@@ -25,9 +25,14 @@ export default function HeroSection({ className }: HeroSectionProps) {
             >
               {heroContent.ctaPrimary}
             </Link>
-            <button className="bg-surface-container-high px-8 py-4 rounded-xl font-semibold border border-outline-variant/20 hover:bg-surface-bright transition-colors">
+            <a
+              href="https://github.com/ayushsrivastava55/sarafu"
+              target="_blank"
+              rel="noreferrer"
+              className="bg-surface-container-high px-8 py-4 rounded-xl font-semibold border border-outline-variant/20 hover:bg-surface-bright transition-colors"
+            >
               {heroContent.ctaSecondary}
-            </button>
+            </a>
           </div>
         </div>
         <div className="relative group">

@@ -119,23 +119,23 @@ export function ChatLayout() {
               </p>
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-secondary-m3">USDm</span>
-                  <span className="text-sm font-bold text-primary-m3">1,200.00</span>
+                  <span className="text-sm text-[#fff9ef]">USDm</span>
+                  <span className="text-sm font-bold text-[#ffe2ab]">1,200.00</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-secondary-m3">KESm</span>
-                  <span className="text-sm font-bold text-primary-m3">85,400.00</span>
+                  <span className="text-sm text-[#fff9ef]">KESm</span>
+                  <span className="text-sm font-bold text-[#ffe2ab]">85,400.00</span>
                 </div>
               </div>
             </div>
-            <button className="w-full py-3 bg-surface-container-high text-primary-m3 font-bold text-xs uppercase tracking-widest rounded-lg hover:bg-surface-bright transition-colors">
+            <button className="w-full py-3 bg-surface-container-high text-[#ffe2ab] font-bold text-xs uppercase tracking-widest rounded-lg hover:bg-surface-bright transition-colors">
               New Transfer
             </button>
           </div>
         </aside>
 
         {/* Main Chat Canvas */}
-        <main className="flex-1 md:ml-64 flex flex-col h-full bg-surface-m3 relative">
+        <main className="flex-1 md:ml-64 flex flex-col h-full bg-[#131313] relative">
           <div
             ref={scrollRef}
             className="flex-1 overflow-y-auto no-scrollbar p-6 space-y-8 pb-32 max-w-4xl mx-auto w-full"
@@ -153,7 +153,7 @@ export function ChatLayout() {
                       smart_toy
                     </span>
                   </div>
-                  <span className="text-[10px] font-mono text-outline-m3 uppercase tracking-tighter animate-pulse">
+                  <span className="text-[10px] font-mono text-[#9c8f78] uppercase tracking-tighter animate-pulse">
                     Thinking...
                   </span>
                 </div>
