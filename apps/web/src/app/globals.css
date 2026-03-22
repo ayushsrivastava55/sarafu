@@ -1,10 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Inter:wght@400;500;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --font-display: "Avenir Next", "Segoe UI", "Trebuchet MS", sans-serif;
+    /* Sarafu Obsidian design tokens */
+    --sarafu-bg: #131313;
+    --sarafu-surface: #131313;
+    --sarafu-surface-low: #1c1b1b;
+    --sarafu-surface-high: #2a2a2a;
+    --sarafu-surface-highest: #353534;
+    --sarafu-surface-bright: #3a3939;
+    --sarafu-surface-container: #201f1f;
+    --sarafu-gold: #FFBF00;
+    --sarafu-gold-light: #ffe2ab;
+    --sarafu-gold-text: #fff9ef;
+    --sarafu-on-surface: #e5e2e1;
+    --sarafu-on-surface-variant: #d4c5ab;
+    --sarafu-outline: #9c8f78;
+    --sarafu-outline-variant: #504532;
+    --sarafu-error: #ffb4ab;
+    --sarafu-tertiary: #00d9fc;
+    --sarafu-tertiary-light: #aaedff;
+
+    --font-display: "Manrope", "Avenir Next", "Segoe UI", "Trebuchet MS", sans-serif;
+    --font-body: "Inter", "Segoe UI", sans-serif;
     --font-mono: "Consolas", "SFMono-Regular", "Liberation Mono", monospace;
     --background: 222 47% 7%;
     --foreground: 210 40% 98%;
@@ -47,7 +69,9 @@
 
   body {
     @apply min-h-screen bg-background text-foreground antialiased;
-    font-family: var(--font-display), sans-serif;
+    font-family: var(--font-body), sans-serif;
+    background-color: var(--sarafu-bg);
+    color: var(--sarafu-on-surface);
     background-image:
       linear-gradient(180deg, rgba(3, 8, 20, 0.7), rgba(3, 8, 20, 1)),
       radial-gradient(circle at top left, rgba(16, 185, 129, 0.12), transparent 28%),
@@ -58,6 +82,26 @@
   pre,
   .font-mono {
     font-family: var(--font-mono), monospace;
+  }
+}
+
+@layer components {
+  .glass-panel {
+    background: rgba(28, 27, 27, 0.6);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+  }
+
+  .gold-gradient {
+    background: linear-gradient(135deg, #ffe2ab 0%, #ffbf00 100%);
+  }
+
+  .glow-subtle {
+    box-shadow: 0 0 40px rgba(255, 191, 0, 0.08);
+  }
+
+  .font-headline {
+    font-family: var(--font-display), sans-serif;
   }
 }
 

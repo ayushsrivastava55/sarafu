@@ -1,11 +1,6 @@
 "use client";
 
-import { useState } from "react";
 import type { QuoteRecord } from "@sarafu/core/client";
-import { Clock3, Send } from "lucide-react";
-
-import { isValidAddress } from "@/lib/app-utils";
-import { Button } from "@/components/ui/button";
 
 export function QuoteCard({
   quote,
@@ -13,79 +8,89 @@ export function QuoteCard({
   onReject,
 }: {
   quote: QuoteRecord;
-  onConfirm: (recipientAddress: string) => Promise<void>;
-  onReject?: () => void;
+  onConfirm: () => void;
+  onReject: () => void;
 }) {
-  const [recipientAddress, setRecipientAddress] = useState("");
-  const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  async function handleConfirm() {
-    if (!isValidAddress(recipientAddress)) {
-      setError("Enter a valid 0x recipient address.");
-      return;
-    }
-
-    setSubmitting(true);
-    setError(null);
-
-    try {
-      await onConfirm(recipientAddress);
-    } finally {
-      setSubmitting(false);
-    }
-  }
-
   return (
-    <div className="rounded-3xl border border-emerald-400/20 bg-emerald-400/10 p-6">
-      <div className="flex flex-wrap items-center gap-3">
-        <div className="rounded-full border border-emerald-300/20 bg-slate-950/40 px-3 py-1 text-xs uppercase tracking-[0.2em] text-emerald-200">
-          Quote ready
-        </div>
-        <div className="inline-flex items-center gap-2 text-xs text-emerald-50/80">
-          <Clock3 className="h-3.5 w-3.5" />
-          Expires {new Date(quote.expiresAt).toLocaleTimeString()}
-        </div>
+    <div
+      className="relative w-full overflow-hidden rounded-2xl border-l-4 border-[#FFBF00] p-6 shadow-2xl"
+      style={{
+        background: "rgba(53, 53, 52, 0.4)",
+        backdropFilter: "blur(24px)",
+        border: "1px solid rgba(255, 191, 0, 0.1)",
+        borderLeft: "4px solid #FFBF00",
+      }}
+    >
+      {/* Background icon */}
+      <div className="pointer-events-none absolute right-0 top-0 p-4 opacity-10">
+        <svg
+          className="h-16 w-16 text-[#FFBF00]"
+          fill="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path d="M12.89 11.1c-1.78-.59-2.64-.96-2.64-1.9 0-1.02 1.11-1.39 1.81-1.39 1.31 0 1.79.99 1.9 1.34l1.58-.67c-.15-.45-.82-1.92-2.54-2.24V5h-2v1.26c-2.48.56-2.49 2.86-2.49 2.96 0 2.27 2.25 2.91 3.35 3.31 1.58.56 2.28 1.07 2.28 2.03 0 1.13-1.05 1.61-1.98 1.61-1.82 0-2.34-1.87-2.4-2.09l-1.66.67c.63 2.19 2.28 2.78 2.9 2.96V19h2v-1.24c.4-.09 2.9-.59 2.9-3.22 0-1.39-.61-2.61-3.01-3.44zM3 21H1v-6h6v2H4.52c1.61 2.41 4.36 4 7.48 4a9 9 0 008.42-5.83l1.89.66A11.002 11.002 0 0112 23c-3.62 0-6.8-1.74-8.81-4.42L3 21zM21 3h2v6h-6V7h2.48C17.87 4.59 15.12 3 12 3a9 9 0 00-8.42 5.83l-1.89-.66A11.002 11.002 0 0112 1c3.62 0 6.8 1.74 8.81 4.42L21 3z" />
+        </svg>
       </div>
 
-      <div className="mt-5 grid gap-4 md:grid-cols-3">
-        <div>
-          <div className="text-sm text-emerald-50/80">Send</div>
-          <div className="mt-1 text-2xl font-semibold text-white">
-            {quote.sourceAmount} {quote.sourceCurrency}
+      <div className="relative z-10">
+        {/* Header */}
+        <div className="mb-6 flex items-end justify-between">
+          <div>
+            <p className="mb-1 text-xs font-medium text-[#d4c5ab]">
+              Transfer Summary
+            </p>
+            <h3 className="font-['Manrope'] text-2xl font-bold text-[#fff9ef]">
+              {quote.sourceAmount} {quote.sourceCurrency} ={" "}
+              <span className="text-[#FFBF00]">
+                {quote.targetAmount} {quote.targetCurrency}
+              </span>
+            </h3>
+          </div>
+          <div className="text-right">
+            <p className="text-[10px] uppercase tracking-widest text-[#d4c5ab]">
+              Rate
+            </p>
+            <p className="font-mono text-sm text-[#fff9ef]">
+              {quote.exchangeRate}
+            </p>
           </div>
         </div>
-        <div>
-          <div className="text-sm text-emerald-50/80">Recipient gets</div>
-          <div className="mt-1 text-2xl font-semibold text-white">
-            {quote.targetAmount} {quote.targetCurrency}
+
+        {/* Details grid */}
+        <div className="mb-6 grid grid-cols-2 gap-4 border-y border-[#504532]/30 py-4">
+          <div>
+            <p className="mb-1 text-[10px] uppercase tracking-widest text-[#d4c5ab]">
+              Network Fee
+            </p>
+            <p className="text-sm font-medium text-[#00d9fc]">
+              {quote.feeEstimate ? `$${quote.feeEstimate}` : "< $0.001"}
+            </p>
+          </div>
+          <div>
+            <p className="mb-1 text-[10px] uppercase tracking-widest text-[#d4c5ab]">
+              Expires
+            </p>
+            <p className="text-sm font-medium text-[#fff9ef]">
+              {new Date(quote.expiresAt).toLocaleTimeString()}
+            </p>
           </div>
         </div>
-        <div>
-          <div className="text-sm text-emerald-50/80">Rate</div>
-          <div className="mt-1 text-2xl font-semibold text-white">{quote.exchangeRate}</div>
+
+        {/* Actions */}
+        <div className="flex gap-3">
+          <button
+            onClick={onConfirm}
+            className="flex-1 rounded-lg bg-[#FFBF00] py-3 font-extrabold text-[#402d00] transition-all hover:shadow-[0_0_20px_rgba(255,191,0,0.3)] active:scale-[0.98]"
+          >
+            Confirm
+          </button>
+          <button
+            onClick={onReject}
+            className="rounded-lg border border-[#504532]/40 px-6 py-3 font-bold text-[#d4c5ab] transition-colors hover:bg-[#353534]"
+          >
+            Cancel
+          </button>
         </div>
-      </div>
-
-      <div className="mt-5">
-        <label className="mb-2 block text-sm text-emerald-50/80">Recipient wallet</label>
-        <input
-          value={recipientAddress}
-          onChange={(event) => setRecipientAddress(event.target.value)}
-          placeholder="0x..."
-          className="w-full rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-sm text-white outline-none transition focus:border-emerald-300/60"
-        />
-        {error ? <p className="mt-2 text-sm text-red-300">{error}</p> : null}
-      </div>
-
-      <div className="mt-5 flex flex-wrap gap-3">
-        <Button onClick={handleConfirm} disabled={submitting}>
-          <Send className="mr-2 h-4 w-4" />
-          {submitting ? "Sending..." : "Confirm send"}
-        </Button>
-        <Button variant="outline" onClick={onReject}>
-          Reject
-        </Button>
       </div>
     </div>
   );
