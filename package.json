@@ -14,9 +14,11 @@
     "contracts:deploy": "turbo run deploy --filter=hardhat",
     "contracts:deploy:celo-sepolia": "turbo run deploy:celo-sepolia --filter=hardhat",
     "contracts:deploy:celo": "turbo run deploy:celo --filter=hardhat",
+    "contracts:deploy:status-sepolia": "turbo run deploy:status-sepolia --filter=hardhat",
     "agent:dev": "pnpm --filter @sarafu/agent dev",
     "agent:build": "pnpm --filter @sarafu/agent build",
-    "agent:start": "pnpm --filter @sarafu/agent start"
+    "agent:start": "pnpm --filter @sarafu/agent start",
+    "web:dev": "pnpm --filter web dev"
   },
   "devDependencies": {
     "@types/node": "^20.8.0",

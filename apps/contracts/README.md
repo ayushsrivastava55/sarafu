@@ -1,89 +1,67 @@
-# sarafu - Smart Contracts
+# Sarafu Smart Contracts
 
-This directory contains the smart contracts for sarafu, built with Hardhat and optimized for the Celo blockchain.
+This package contains the `RemittanceSwap` audit contract used by Sarafu to log remittances and manage funded ERC-20 balances for the agent wallet.
 
-## 🚀 Quick Start
+## Quick Start
 
 ```bash
-# Install dependencies
-pnpm install
-
-# Compile contracts
 pnpm compile
-
-# Run tests
 pnpm test
-
-# Deploy to Celo Sepolia Testnet
 pnpm deploy:celo-sepolia
-
-# Deploy to Celo Mainnet
 pnpm deploy:celo
+pnpm deploy:status-sepolia
 ```
 
-## 📜 Available Scripts
+## Available Scripts
 
-- `pnpm compile` - Compile smart contracts
-- `pnpm test` - Run contract tests
-- `pnpm deploy` - Deploy to local network
-- `pnpm deploy:celo-sepolia` - Deploy to Celo Sepolia Testnet
-- `pnpm deploy:celo` - Deploy to Celo Mainnet
-- `pnpm verify` - Verify contracts on Etherscan
-- `pnpm clean` - Clean artifacts and cache
+- `pnpm compile` compiles the contracts.
+- `pnpm test` runs the `RemittanceSwap` test suite.
+- `pnpm deploy` deploys `RemittanceSwap` to the default network.
+- `pnpm deploy:celo-sepolia` deploys to Celo Sepolia.
+- `pnpm deploy:celo` deploys to Celo mainnet.
+- `pnpm deploy:status-sepolia` deploys to Status Sepolia.
+- `pnpm verify` verifies a deployment.
+- `pnpm clean` clears Hardhat artifacts and cache.
 
-## 🌐 Networks
+## Networks
 
-### Celo Mainnet
-- **Chain ID**: 42220
-- **RPC URL**: https://forno.celo.org
-- **Explorer**: https://celoscan.io
+- `celo`
+  Chain ID: `42220`
+  RPC: `https://forno.celo.org`
+  Explorer: `https://celoscan.io`
+- `celo-sepolia`
+  Chain ID: `11142220`
+  RPC: `https://forno.celo-sepolia.celo-testnet.org/`
+  Explorer: `https://sepolia.celoscan.io/`
+  Faucet: `https://faucet.celo.org`
+- `status-sepolia`
+  Chain ID: `1660990954`
+  RPC: `https://public.sepolia.rpc.status.network`
+  Explorer: `https://sepoliascan.status.network`
+  Faucet: `https://faucet.status.network/`
 
-### Celo Sepolia Testnet
-- **Chain ID**: 11142220
-- **RPC URL**: https://forno.celo-sepolia.celo-testnet.org/
-- **Explorer**: https://sepolia.celoscan.io/
-- **Faucet**: https://faucet.celo.org/celo-sepolia
+## Environment
 
-
-## 🔧 Environment Setup
-
-1. Copy the environment template:
-   ```bash
-   cp .env.example .env
-   ```
-
-2. Fill in your private key and API keys:
-   ```env
-   PRIVATE_KEY=your_private_key_without_0x_prefix
-   ETHERSCAN_API_KEY=your_etherscan_api_key
-   ```
-
-## 📁 Project Structure
-
-```
-contracts/          # Smart contract source files
-├── Lock.sol        # Sample timelock contract
-
-test/              # Contract tests
-├── Lock.ts        # Tests for Lock contract
-
-ignition/          # Deployment scripts
-└── modules/
-    └── Lock.ts    # Lock contract deployment
-
-hardhat.config.ts  # Hardhat configuration
-tsconfig.json      # TypeScript configuration
+```env
+PRIVATE_KEY=0x...
+ETHERSCAN_API_KEY=...
 ```
 
-## 🔐 Security Notes
+## Structure
 
-- Never commit your `.env` file with real private keys
-- Use a dedicated wallet for development/testing
-- Test thoroughly on Celo Sepolia Testnet before CeloMainnet deployment
-- Consider using a hardware wallet for mainnet deployments
+```text
+contracts/
+  MockERC20.sol
+  RemittanceSwap.sol
+ignition/modules/
+  RemittanceSwap.ts
+test/
+  RemittanceSwap.ts
+```
 
-## 📚 Learn More
+## Security Notes
 
-- [Hardhat Documentation](https://hardhat.org/docs)
-- [Celo Developer Documentation](https://docs.celo.org)
-- [Viem Documentation](https://viem.sh) (Ethereum library used by Hardhat)
+- Use a dedicated funded wallet for testnet deployments.
+- Test on Celo Sepolia before any mainnet deployment.
+- `recordRemittance` and `withdraw` are owner-only.
+- Token movement uses OpenZeppelin `SafeERC20`.

@@ -1,23 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-/**
- * @title RemittanceSwap
- * @notice Minimal on-chain remittance contract for Sarafu agent.
- *         Accepts ERC-20 stablecoin deposits and logs remittance intents.
- *         Actual Mento swaps are handled off-chain via the Mento SDK.
- *         Deployed on Celo and Status Network for hackathon tracks.
- */
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
-interface IERC20 {
-    function transfer(address to, uint256 amount) external returns (bool);
-    function transferFrom(address from, address to, uint256 amount) external returns (bool);
-    function balanceOf(address account) external view returns (uint256);
-    function approve(address spender, uint256 amount) external returns (bool);
-}
+contract RemittanceSwap is Ownable {
+    using SafeERC20 for IERC20;
 
-contract RemittanceSwap {
-    address public owner;
     uint256 public totalRemittances;
     uint256 public totalVolume;
 
@@ -46,16 +36,8 @@ contract RemittanceSwap {
     event FundsDeposited(address indexed token, address indexed from, uint256 amount);
     event FundsWithdrawn(address indexed token, address indexed to, uint256 amount);
 
-    modifier onlyOwner() {
-        require(msg.sender == owner, "Not owner");
-        _;
-    }
+    constructor() Ownable(msg.sender) {}
 
-    constructor() {
-        owner = msg.sender;
-    }
-
-    /// @notice Record a remittance that was executed off-chain via Mento SDK
     function recordRemittance(
         address recipient,
         address tokenIn,
@@ -74,33 +56,35 @@ contract RemittanceSwap {
         });
 
         remittances.push(r);
-        totalRemittances++;
+        totalRemittances += 1;
         totalVolume += amountIn;
 
         emit RemittanceSent(
-            msg.sender, recipient, tokenIn, tokenOut,
-            amountIn, amountOut, block.timestamp
+            msg.sender,
+            recipient,
+            tokenIn,
+            tokenOut,
+            amountIn,
+            amountOut,
+            block.timestamp
         );
     }
 
-    /// @notice Deposit tokens into the contract for the agent to use
     function deposit(address token, uint256 amount) external {
-        IERC20(token).transferFrom(msg.sender, address(this), amount);
+        IERC20(token).safeTransferFrom(msg.sender, address(this), amount);
         emit FundsDeposited(token, msg.sender, amount);
     }
 
-    /// @notice Withdraw tokens (owner only)
     function withdraw(address token, uint256 amount) external onlyOwner {
-        IERC20(token).transfer(owner, amount);
-        emit FundsWithdrawn(token, owner, amount);
+        address recipient = owner();
+        IERC20(token).safeTransfer(recipient, amount);
+        emit FundsWithdrawn(token, recipient, amount);
     }
 
-    /// @notice Get total number of remittances processed
     function getStats() external view returns (uint256 count, uint256 volume) {
         return (totalRemittances, totalVolume);
     }
 
-    /// @notice Get a specific remittance by index
     function getRemittance(uint256 index) external view returns (Remittance memory) {
         require(index < remittances.length, "Index out of bounds");
         return remittances[index];

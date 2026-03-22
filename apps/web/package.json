@@ -10,6 +10,8 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "@sarafu/core": "workspace:*",
+    "@react-native-async-storage/async-storage": "^2.2.0",
     "next": "^14.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -21,6 +23,9 @@
     "lucide-react": "^0.292.0",
     "@rainbow-me/rainbowkit": "^2.0.0",
     "@tanstack/react-query": "^5.0.0",
+    "@x402/core": "^2.7.0",
+    "@x402/evm": "^2.7.0",
+    "@x402/next": "^2.7.0",
     "viem": "^2.0.0",
     "wagmi": "^2.0.0"
   },

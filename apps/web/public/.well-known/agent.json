@@ -1,0 +1,13 @@
+{
+  "name": "Sarafu",
+  "description": "Autonomous AI remittance agent on Celo.",
+  "tools": [
+    "get_quote",
+    "send_remittance",
+    "check_balance",
+    "list_currencies",
+    "explain_fees"
+  ],
+  "api": "/api",
+  "x402Support": true
+}

@@ -1,0 +1,29 @@
+{
+  "type": "service-metadata",
+  "name": "Sarafu API",
+  "description": "Programmatic quote and remittance execution endpoints for Sarafu.",
+  "endpoints": [
+    {
+      "path": "/api/chat",
+      "method": "POST",
+      "paymentRequired": false
+    },
+    {
+      "path": "/api/quote",
+      "method": "POST",
+      "paymentRequired": true,
+      "priceUsd": "$0.01"
+    },
+    {
+      "path": "/api/remit",
+      "method": "POST",
+      "paymentRequired": true,
+      "priceUsd": "$0.01"
+    },
+    {
+      "path": "/api/health",
+      "method": "GET",
+      "paymentRequired": false
+    }
+  ]
+}

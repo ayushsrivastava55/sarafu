@@ -1,6 +1,7 @@
 import "dotenv/config";
 import * as readline from "readline";
 import { SarafuAgent } from "./agent/loop.js";
+import { saveConversationLog } from "./utils/logger.js";
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -13,21 +14,18 @@ function prompt(query: string): Promise<string> {
 
 async function main() {
   console.log(`
-  ╔═══════════════════════════════════════════════════════╗
-  ║                    SARAFU                             ║
-  ║     AI Remittance Agent on Celo                       ║
-  ║                                                       ║
-  ║  Send money across borders in <2s for <$0.001         ║
-  ║  15+ currencies via Mento stablecoins                 ║
-  ║  Privacy: Venice AI (zero data retention)             ║
-  ║                                                       ║
-  ║  Try: "Send $50 to Kenya"                             ║
-  ║       "How much is 200 USD in Nigerian Naira?"        ║
-  ║       "Check my balance"                              ║
-  ║       "Compare fees for sending $100"                 ║
-  ║                                                       ║
-  ║  Type 'quit' to exit, 'save' to export conversation   ║
-  ╚═══════════════════════════════════════════════════════╝
+  ================================================
+                    SARAFU CLI
+      AI Remittance Agent on Celo + Venice AI
+  ================================================
+  Try:
+    "Send 50 USD to Kenya"
+    "How much is 200 USD in NGN?"
+    "Check my balance"
+    "Compare fees for sending 100"
+
+  Type "save" to export a redacted conversation log.
+  Type "quit" to exit.
   `);
 
   if (!process.env.VENICE_API_KEY) {
@@ -44,20 +42,25 @@ async function main() {
     if (!trimmed) continue;
 
     if (trimmed.toLowerCase() === "quit" || trimmed.toLowerCase() === "exit") {
-      await agent.saveLog();
-      console.log("\n[Sarafu] Goodbye. Your money should move like a message — instant and free.");
+      console.log("\n[Sarafu] Goodbye.");
       rl.close();
       process.exit(0);
     }
 
     if (trimmed.toLowerCase() === "save") {
-      await agent.saveLog();
+      await saveConversationLog(await agent.getConversationLog());
       continue;
     }
 
     try {
       const response = await agent.chat(trimmed);
-      console.log(`\nsarafu > ${response}`);
+
+      for (const trace of response.toolTrace) {
+        console.log(`  [tool] ${trace.name}(${JSON.stringify(trace.args)})`);
+        console.log(`  [result] ${JSON.stringify(trace.result).slice(0, 240)}`);
+      }
+
+      console.log(`\nsarafu > ${response.assistantText}`);
     } catch (err: any) {
       console.error(`\n[error] ${err.message}`);
     }

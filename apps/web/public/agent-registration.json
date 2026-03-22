@@ -1,0 +1,33 @@
+{
+  "type": "https://eips.ethereum.org/EIPS/eip-8004#registration-v1",
+  "name": "Sarafu",
+  "description": "Autonomous AI remittance agent on Celo with Mento local stablecoins, x402 paid APIs, and Venice private inference.",
+  "image": "/sarafu-mark.svg",
+  "services": [
+    {
+      "name": "web",
+      "endpoint": "https://sarafu.vercel.app"
+    },
+    {
+      "name": "api",
+      "endpoint": "https://sarafu.vercel.app/api",
+      "version": "v1"
+    },
+    {
+      "name": "agentWallet",
+      "endpoint": "eip155:42220:0x8ec8995217A03112459CB4875a135aB8606Bc8AB"
+    }
+  ],
+  "x402Support": true,
+  "active": true,
+  "registrations": [
+    {
+      "agentId": 0,
+      "agentRegistry": "eip155:8453:0x8004a6090Cd10A7288092483047B097295Fb8847"
+    }
+  ],
+  "supportedTrust": [
+    "reputation",
+    "tee-attestation"
+  ]
+}

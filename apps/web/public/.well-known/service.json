@@ -1,0 +1,10 @@
+{
+  "name": "Sarafu API",
+  "baseUrl": "/api",
+  "routes": [
+    "/api/chat",
+    "/api/quote",
+    "/api/remit",
+    "/api/health"
+  ]
+}
