@@ -33,10 +33,14 @@ function resolvePayToAddress(): { address: `0x${string}`; configured: boolean } 
 
   const privateKey = normalizePrivateKey(process.env.PRIVATE_KEY);
   if (privateKey) {
-    return {
-      address: privateKeyToAccount(privateKey).address,
-      configured: true,
-    };
+    try {
+      return {
+        address: privateKeyToAccount(privateKey).address,
+        configured: true,
+      };
+    } catch {
+      // PRIVATE_KEY may not be available at build time
+    }
   }
 
   return {
