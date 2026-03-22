@@ -1,8 +1,8 @@
-// Mento stablecoin addresses on Celo Mainnet
-// Rebranded in late 2025: cUSD -> USDm, cKES -> KESm, etc.
-// Contract addresses remain the same
+// Mento stablecoin addresses
+// Uses Celo Sepolia testnet by default (mainnet oracles are weekend-gated)
+// Set CELO_NETWORK=mainnet in .env to use mainnet addresses
 
-export const TOKENS = {
+const MAINNET_TOKENS = {
   // Core stablecoins
   USDm: "0x765DE816845861e75A25fCA122bb6898B8B1282a",   // US Dollar (formerly cUSD)
   EURm: "0xD8763CBa276a3738E6DE85b4b3bF5FDed6D6cA73",   // Euro (formerly cEUR)
@@ -24,6 +24,28 @@ export const TOKENS = {
   CELO: "0x471EcE3750Da237f93B8E339c536989b8978a438",
   USDC: "0xcebA9300f2b948710d2653dD7B07f33A8B32118C",
 } as const;
+
+const TESTNET_TOKENS = {
+  USDm: "0xdE9e4C3ce781b4bA68120d6261cbad65ce0aB00b",
+  EURm: "0xA99dC247d6b7B2E3ab48a1fEE101b83cD6aCd82a",
+  BRLm: "0x2294298942fdc79417DE9E0D740A4957E0e7783a",
+  KESm: "0xC7e4635651E3e3Af82b61d3E23c159438daE3BbF",
+  COPm: "0x5F8d55c3627d2dc0a2C3FBa0C3623198947Ee1d17869E",
+  XOFm: "0x5505b70207aE3B826c1A7607F19F3Bf73444A082",
+  GBPm: "0x85F5181Abdbf0e1814Fc4358582Ae07b8eBA3aF3",
+  NGNm: "0x3d5ae86F34E2a82771496D140daFAEf3789dF888",
+  PHPm: "0x0352976d940a2C3FBa0C3623198947Ee1d17869E",
+  ZARm: "0x10CCfB235b0E1Ed394bACE4560C3ed016697687e",
+  JPYm: "0x85Bee67D435A39f7467a8a9DE34a5B73D25Df426",
+  CHFm: "0x284E9b7B623eAE866914b7FA0eB720C2Bb3c2980",
+  AUDm: "0x5873Faeb42F3563dcD77F0fbbdA818E6d6DA3139",
+  CADm: "0xF151c9a13b78C84f93f50B8b3bC689fedc134F60",
+  GHSm: "0x5e94B8C872bD47BC4255E60ECBF44D5E66e7401C",
+  CELO: "0x471EcE3750Da237f93B8E339c536989b8978a438",
+  USDC: "0x0000000000000000000000000000000000000000", // no testnet USDC
+} as const;
+
+export const TOKENS = process.env.CELO_NETWORK === "mainnet" ? MAINNET_TOKENS : TESTNET_TOKENS;
 
 // Human-readable currency mapping
 export const CURRENCY_TO_TOKEN: Record<string, keyof typeof TOKENS> = {

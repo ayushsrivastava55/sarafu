@@ -16,12 +16,14 @@ export interface RemittanceIntent {
 }
 
 // Initialize Mento SDK dynamically
+// Use Celo Sepolia testnet — Mento V3 mainnet oracles are weekend-gated and many pairs lack live price feeds
 let mentoInstance: any = null;
 
 async function getMento() {
   if (!mentoInstance) {
     const { Mento, ChainId } = await import("@mento-protocol/mento-sdk");
-    mentoInstance = await Mento.create(ChainId.CELO);
+    const network = process.env.CELO_NETWORK === "mainnet" ? ChainId.CELO : ChainId.CELO_SEPOLIA;
+    mentoInstance = await Mento.create(network);
   }
   return mentoInstance;
 }
