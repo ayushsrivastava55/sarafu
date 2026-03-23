@@ -4,7 +4,7 @@
 
 > *Sarafu* means "currency" in Swahili. Money should move like a message — instant, cheap, and private.
 
-**Live demo**: [sarafu-web.vercel.app](https://sarafu-web.vercel.app) | **Demo video**: [sarafu-demo.mp4](./sarafu-demo.mp4)
+**Live demo**: [sarafu-web.vercel.app](https://sarafu-web.vercel.app) | **Demo video**: [Watch on YouTube](https://youtu.be/eXfiOlI3BFc)
 
 ---
 
